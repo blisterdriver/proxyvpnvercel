@@ -36,6 +36,9 @@ interface WordPressPost {
 }
 
 const BlogPost = () => {
+  // Access the environment variable
+  const wordpressApiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_BASE_URL;
+
   const router = useRouter();
   const params = useParams();
   const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug as string;
@@ -61,6 +64,14 @@ const BlogPost = () => {
       return;
     }
 
+    // Ensure the environment variable is available
+    if (!wordpressApiBaseUrl) {
+      setError('WordPress API base URL is not configured.');
+      setIsLoading(false);
+      console.error('Environment variable NEXT_PUBLIC_WORDPRESS_API_BASE_URL is not set.');
+      return;
+    }
+
     const fetchPost = async () => {
       try {
         setIsLoading(true);
@@ -68,8 +79,12 @@ const BlogPost = () => {
 
         console.log('Fetching post with slug:', slug); // Debug log
 
+        // CONSTRUCT THE URL USING THE ENVIRONMENT VARIABLE
+        const apiUrl = `${wordpressApiBaseUrl}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`;
+        console.log('Fetching from URL:', apiUrl); // Debug log
+
         const response = await fetch(
-          `https://blog.kitemporiam.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`,
+          apiUrl,
           {
             headers: {
               'Accept': 'application/json',
@@ -101,7 +116,7 @@ const BlogPost = () => {
     };
 
     fetchPost();
-  }, [slug]);
+  }, [slug, wordpressApiBaseUrl]); // Add wordpressApiBaseUrl to dependency array
 
   // Calculate reading time based on content length
   const calculateReadingTime = (content: string) => {
@@ -164,7 +179,7 @@ const BlogPost = () => {
             <h1 className="text-4xl font-orbitron font-bold text-white mb-4">404</h1>
             <h2 className="text-2xl font-orbitron font-bold text-white mb-4">Post Not Found</h2>
             <p className="text-cure-gray-200 mb-8">
-              {error || "The blog post you're looking for doesn't exist or may have been moved."} {/* ALREADY FIXED IN PREVIOUS ROUND */}
+              {error || "The blog post you're looking for doesn't exist or may have been moved."}
             </p>
             <div className="space-y-4">
               <Button

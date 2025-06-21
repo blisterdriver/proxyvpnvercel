@@ -63,6 +63,9 @@ interface WordPressPost {
 }
 
 const Blog = () => {
+  // Access the environment variable
+  const wordpressApiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_BASE_URL;
+
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,10 +92,19 @@ const Blog = () => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    // Ensure the environment variable is available
+    if (!wordpressApiBaseUrl) {
+      setError(new Error('WordPress API base URL is not configured.'));
+      setIsLoading(false);
+      console.error('Environment variable NEXT_PUBLIC_WORDPRESS_API_BASE_URL is not set.');
+      return;
+    }
+
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('https://blog.kitemporiam.com/wp-json/wp/v2/posts?_embed&per_page=100');
+        // Use the environment variable here
+        const response = await fetch(`${wordpressApiBaseUrl}/wp-json/wp/v2/posts?_embed&per_page=100`);
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
@@ -100,14 +112,14 @@ const Blog = () => {
         setPosts(data);
         setError(null);
       } catch (err) {
-        setError(err as Error);
+        setError(err instanceof Error ? err : new Error('An unknown error occurred.'));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPosts();
-  }, []);
+  }, [wordpressApiBaseUrl]); // Add wordpressApiBaseUrl to the dependency array
 
   // Calculate reading time based on content length - FIXED TYPO
   const calculateReadingTime = (content: string) => {
@@ -191,9 +203,8 @@ const Blog = () => {
       if (src) {
         if (src.startsWith('http')) {
           return src;
-        } else if (src.startsWith('/')) {
-          // Assuming WordPress blog domain for relative URLs
-          return `https://blog.kitemporiam.com${src}`;
+        } else if (src.startsWith('/') && wordpressApiBaseUrl) { // Use env variable here
+          return `${wordpressApiBaseUrl}${src}`;
         }
       }
     }
@@ -280,7 +291,7 @@ const Blog = () => {
           {/* Error State */}
           {error && (
             <div className="text-center text-cure-gray-100">
-              <p>Failed to load posts. Please try again later.</p>
+              <p>Failed to load posts. {error.message}</p>
             </div>
           )}
 
