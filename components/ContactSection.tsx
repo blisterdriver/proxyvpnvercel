@@ -26,7 +26,7 @@ const ContactSection = () => {
                 Contact Information
               </h3>
               <p className="text-cure-gray-100 mb-8">
-                Ready to take your gaming to the next level? Reach out to us and let's get you started with CureProxy. {/* FIXED: "let's" -> "let's" */}
+                Ready to take your gaming to the next level? Reach out to us and let&#39;s get you started with CureProxy. {/* FIXED: "let's" -> "let's" */}
               </p>
             </div>
 
