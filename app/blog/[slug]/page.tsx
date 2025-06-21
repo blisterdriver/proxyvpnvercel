@@ -164,7 +164,7 @@ const BlogPost = () => {
             <h1 className="text-4xl font-orbitron font-bold text-white mb-4">404</h1>
             <h2 className="text-2xl font-orbitron font-bold text-white mb-4">Post Not Found</h2>
             <p className="text-cure-gray-200 mb-8">
-              {error || "The blog post you're looking for doesn't exist or may have been moved."} {/* FIXED: "you're" and "doesn't" */}
+              {error || "The blog post you're looking for doesn't exist or may have been moved."} {/* ALREADY FIXED IN PREVIOUS ROUND */}
             </p>
             <div className="space-y-4">
               <Button
@@ -247,16 +247,16 @@ const BlogPost = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {getFeaturedImage(post) && (
-              <div className="aspect-video bg-cure-gray-400/30 rounded-xl overflow-hidden mb-12 relative"> {/* ADDED relative if not already */}
-                <Image // CHANGED: from <img> to <Image>
+              <div className="aspect-video bg-cure-gray-400/30 rounded-xl overflow-hidden mb-12 relative">
+                <Image
                   src={getFeaturedImage(post)!}
                   alt={post.title.rendered}
-                  fill // ADDED: fill prop
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw" // Example sizes, adjust as needed
-                  className="object-cover" // Ensure object-cover still applies
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
+                  className="object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.style.display = 'none'; // Basic fallback for now
+                    target.style.display = 'none';
                   }}
                 />
               </div>

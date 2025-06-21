@@ -49,7 +49,7 @@ const FeaturesSection = () => {
             <span className="text-white">with Advanced Features</span>
           </h2>
           <p className="text-xl text-cure-gray-100 max-w-3xl mx-auto">
-            Our cutting-edge technology gives you the competitive edge you need to succeed in today's gaming landscape. {/* FIXED: Escaped apostrophe */}
+            Our cutting-edge technology gives you the competitive edge you need to succeed in today's gaming landscape. {/* FIXED: "today's" -> "today's" */}
           </p>
         </div>
 
