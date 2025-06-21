@@ -1,5 +1,5 @@
 
-import { Check, Star, Zap } from 'lucide-react';
+import { Check, Star} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const PricingSection = () => {

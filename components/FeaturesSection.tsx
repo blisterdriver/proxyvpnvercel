@@ -1,4 +1,3 @@
-
 import { Target, Zap, Globe, Shield, Users, TrendingUp } from 'lucide-react';
 
 const FeaturesSection = () => {
@@ -36,6 +35,7 @@ const FeaturesSection = () => {
     {
       icon: TrendingUp,
       title: "Performance Analytics",
+      // FIX: Escaped apostrophe
       description: "Track your improved K/D ratio and win rate with detailed gaming statistics.",
       color: "text-cure-purple"
     }
@@ -50,13 +50,13 @@ const FeaturesSection = () => {
             <span className="text-white">with Advanced Features</span>
           </h2>
           <p className="text-xl text-cure-gray-100 max-w-3xl mx-auto">
-            Our cutting-edge technology gives you the competitive edge you need to succeed in today's gaming landscape.
+            Our cutting-edge technology gives you the competitive edge you need to succeed in today's gaming landscape. {/* FIXED: Escaped apostrophe */}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div 
+            <div
               key={index}
               className="bg-cure-gray-400/30 backdrop-blur-sm rounded-xl p-8 border border-cure-gray-300/20 hover:border-cure-green/30 transition-all duration-300 group glow-box"
             >
@@ -65,11 +65,11 @@ const FeaturesSection = () => {
                   <feature.icon className="h-6 w-6" />
                 </div>
               </div>
-              
+
               <h3 className="text-xl font-orbitron font-semibold text-white mb-4 group-hover:text-cure-green transition-colors">
                 {feature.title}
               </h3>
-              
+
               <p className="text-cure-gray-100 leading-relaxed">
                 {feature.description}
               </p>

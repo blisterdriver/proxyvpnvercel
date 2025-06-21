@@ -1,9 +1,11 @@
 'use client';
 
-import { ArrowLeft, Calendar, User, ArrowRight, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+// REMOVED UNUSED ChevronLeft and ChevronRight imports
+import { ArrowLeft, Calendar, User, ArrowRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image'; // ADDED: Import Next.js Image component
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -129,8 +131,8 @@ const Blog = () => {
   ))];
 
   // Filter posts based on selected category
-  const filteredPosts = selectedCategory === 'All' 
-    ? posts 
+  const filteredPosts = selectedCategory === 'All'
+    ? posts
     : posts.filter(post => getCategories(post).includes(selectedCategory));
 
   // Pagination logic
@@ -160,7 +162,7 @@ const Blog = () => {
     if (firstImageFromContent) {
       return firstImageFromContent;
     }
-    
+
     // Fallback to featured media if no image in content
     const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
     if (featuredMedia) {
@@ -170,10 +172,10 @@ const Blog = () => {
       const largeImage = sizes?.large?.source_url;
       const thumbnailImage = sizes?.thumbnail?.source_url;
       const fullImage = featuredMedia.source_url;
-      
+
       return mediumImage || largeImage || thumbnailImage || fullImage;
     }
-    
+
     return null;
   };
 
@@ -182,7 +184,7 @@ const Blog = () => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
     const firstImg = doc.querySelector('img');
-    
+
     if (firstImg) {
       const src = firstImg.getAttribute('src');
       // Handle both absolute and relative URLs
@@ -195,7 +197,7 @@ const Blog = () => {
         }
       }
     }
-    
+
     return null;
   };
 
@@ -206,11 +208,11 @@ const Blog = () => {
     const doc = parser.parseFromString(post.content.rendered, 'text/html');
     const firstImg = doc.querySelector('img');
     const altFromContent = firstImg?.getAttribute('alt');
-    
+
     if (altFromContent) {
       return altFromContent;
     }
-    
+
     // Fallback to featured media alt text
     const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
     return featuredMedia?.alt_text || post.title.rendered || 'Blog post image';
@@ -228,7 +230,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-cure-navy">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-gradient-to-b from-cure-navy via-cure-navy to-cure-gray-400/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -258,8 +260,8 @@ const Blog = () => {
                 key={category}
                 variant={category === selectedCategory ? "default" : "outline"}
                 onClick={() => setSelectedCategory(category)}
-                className={category === selectedCategory 
-                  ? "bg-gradient-to-r from-cure-green to-cure-blue text-white font-medium shadow-lg" 
+                className={category === selectedCategory
+                  ? "bg-gradient-to-r from-cure-green to-cure-blue text-white font-medium shadow-lg"
                   : "border-cure-gray-300/50 text-cure-gray-100 hover:bg-cure-gray-400/20 hover:border-cure-green/50 transition-all duration-300 font-medium"
                 }
               >
@@ -294,19 +296,21 @@ const Blog = () => {
                   {currentPosts.map((post) => {
                     const thumbnailUrl = getThumbnailImage(post);
                     const altText = getImageAltText(post);
-                    
+
                     return (
-                      <article 
+                      <article
                         key={post.id}
                         onClick={() => handlePostClick(post.slug)}
                         className="bg-cure-gray-400/20 rounded-xl overflow-hidden border border-cure-gray-300/20 hover:border-cure-green/40 transition-all duration-300 group backdrop-blur-sm cursor-pointer"
                       >
                         <div className="aspect-video bg-cure-gray-400/30 relative overflow-hidden">
                           {thumbnailUrl ? (
-                            <img 
-                              src={thumbnailUrl} 
+                            <Image // CHANGED: from <img> to <Image>
+                              src={thumbnailUrl}
                               alt={altText}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              fill // Add fill prop to make image cover its parent
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Optimize for different screen sizes
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 const parent = target.parentElement;
@@ -318,11 +322,8 @@ const Blog = () => {
                                   `;
                                 }
                               }}
-                              onLoad={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.opacity = '1';
-                              }}
-                              style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
+                              // onLoad is not typically used with Next.js Image as it handles loading
+                              // style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }} // This is handled by Next.js Image
                             />
                           ) : (
                             <div className="w-full h-full bg-gray-600 flex items-center justify-center">
@@ -335,17 +336,17 @@ const Blog = () => {
                             </span>
                           </div>
                         </div>
-                        
+
                         <div className="p-6">
                           <h3 className="text-xl font-orbitron font-semibold text-white mb-3 group-hover:text-cure-green transition-colors">
                             <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
                           </h3>
-                          
-                          <div 
+
+                          <div
                             className="text-cure-gray-100 text-sm mb-4 leading-relaxed line-clamp-3"
                             dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                           />
-                          
+
                           <div className="flex items-center justify-between text-cure-gray-200 text-xs mb-4">
                             <div className="flex items-center space-x-4">
                               <div className="flex items-center space-x-1">
@@ -362,9 +363,9 @@ const Blog = () => {
                               <span>{calculateReadingTime(post.content.rendered)}</span>
                             </div>
                           </div>
-                          
-                          <Button 
-                            variant="outline" 
+
+                          <Button
+                            variant="outline"
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -388,12 +389,12 @@ const Blog = () => {
                   <Pagination className="justify-center">
                     <PaginationContent className="bg-cure-gray-400/20 backdrop-blur-sm rounded-lg p-2 border border-cure-gray-300/20">
                       <PaginationItem>
-                        <PaginationPrevious 
+                        <PaginationPrevious
                           onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                           className={`text-cure-gray-100 hover:text-white hover:bg-cure-blue/30 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         />
                       </PaginationItem>
-                      
+
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
                         if (
                           page === 1 ||
@@ -406,8 +407,8 @@ const Blog = () => {
                                 onClick={() => setCurrentPage(page)}
                                 isActive={currentPage === page}
                                 className={`cursor-pointer text-cure-gray-100 hover:text-white hover:bg-cure-blue/30 ${
-                                  currentPage === page 
-                                    ? 'bg-cure-blue text-white border-cure-blue' 
+                                  currentPage === page
+                                    ? 'bg-cure-blue text-white border-cure-blue'
                                     : ''
                                 }`}
                               >
@@ -427,9 +428,9 @@ const Blog = () => {
                         }
                         return null;
                       })}
-                      
+
                       <PaginationItem>
-                        <PaginationNext 
+                        <PaginationNext
                           onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                           className={`text-cure-gray-100 hover:text-white hover:bg-cure-blue/30 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         />
