@@ -35,7 +35,6 @@ const FeaturesSection = () => {
     {
       icon: TrendingUp,
       title: "Performance Analytics",
-      // FIX: Escaped apostrophe
       description: "Track your improved K/D ratio and win rate with detailed gaming statistics.",
       color: "text-cure-purple"
     }

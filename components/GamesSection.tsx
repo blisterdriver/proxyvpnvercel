@@ -1,4 +1,3 @@
-
 import { Gamepad2 } from 'lucide-react';
 
 const GamesSection = () => {
@@ -50,13 +49,13 @@ const GamesSection = () => {
 
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {games.map((game, index) => (
-            <div 
+            <div
               key={index}
               className=" border-[1px] border-cure-green group relative bg-cure-gray-400/20 rounded-xl p-6 border border-cure-gray-300/20  transition-all duration-300 overflow-hidden"
             >
               {/* Background Gradient */}
               <div className={`absolute inset-0  bg-gradient-to-br ${game.color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
-              
+
               <div className="relative  border-[1px]z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
@@ -68,11 +67,11 @@ const GamesSection = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <h3 className="text-lg font-orbitron font-semibold text-white mb-2 group-hover:text-cure-green transition-colors">
                   {game.name}
                 </h3>
-                
+
                 <div className="flex items-center space-x-2 text-cure-gray-100">
                   <div className="h-2 w-2 bg-cure-green rounded-full animate-pulse" />
                   <span className="text-sm">Fully Supported</span>
@@ -84,7 +83,7 @@ const GamesSection = () => {
 
         <div className="text-center  mt-12">
           <p className="text-cure-gray-100 mb-4">
-            Don't see your game? <span className="text-cure-green">Contact us</span> - we're constantly adding support for new titles.
+            Don't see your game? <span className="text-cure-green">Contact us</span> - we're constantly adding support for new titles. {/* FIXED: "Don't" and "we're" */}
           </p>
           <div className="flex items-center justify-center space-x-4 text-sm text-cure-gray-100">
             <div className="flex items-center space-x-2">

@@ -4,6 +4,7 @@ import { ArrowLeft, Calendar, User, Clock, Share2, Bookmark } from 'lucide-react
 import { Button } from '@/components/ui/button';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image'; // ADDED: Import Next.js Image component
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -64,9 +65,9 @@ const BlogPost = () => {
       try {
         setIsLoading(true);
         setError(null);
-        
+
         console.log('Fetching post with slug:', slug); // Debug log
-        
+
         const response = await fetch(
           `https://blog.kitemporiam.com/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`,
           {
@@ -76,20 +77,20 @@ const BlogPost = () => {
             },
           }
         );
-        
+
         console.log('Response status:', response.status); // Debug log
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const posts = await response.json();
         console.log('Fetched posts:', posts); // Debug log
-        
+
         if (!posts || posts.length === 0) {
           throw new Error('Post not found');
         }
-        
+
         setPost(posts[0]);
       } catch (err) {
         console.error('Error fetching post:', err); // Debug log
@@ -130,11 +131,11 @@ const BlogPost = () => {
   // Get featured image from WordPress featured media
   const getFeaturedImage = (post: WordPressPost) => {
     const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
-    
+
     if (featuredMedia) {
       return featuredMedia.source_url;
     }
-    
+
     return null;
   };
 
@@ -163,20 +164,20 @@ const BlogPost = () => {
             <h1 className="text-4xl font-orbitron font-bold text-white mb-4">404</h1>
             <h2 className="text-2xl font-orbitron font-bold text-white mb-4">Post Not Found</h2>
             <p className="text-cure-gray-200 mb-8">
-              {error || "The blog post you're looking for doesn't exist or may have been moved."}
+              {error || "The blog post you're looking for doesn't exist or may have been moved."} {/* FIXED: "you're" and "doesn't" */}
             </p>
             <div className="space-y-4">
-              <Button 
-                onClick={handleBackToBlog} 
+              <Button
+                onClick={handleBackToBlog}
                 className="bg-gradient-to-r from-cure-green to-cure-blue text-white font-semibold px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-300"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Blog
               </Button>
               <br />
-              <Button 
+              <Button
                 variant="outline"
-                onClick={() => router.push('/')} 
+                onClick={() => router.push('/')}
                 className="border-cure-gray-300/50 text-cure-gray-100 hover:bg-cure-gray-400/20"
               >
                 Go to Homepage
@@ -192,7 +193,7 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-cure-navy">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-24 pb-8 bg-gradient-to-b from-cure-navy via-cure-navy to-cure-gray-400/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -200,18 +201,18 @@ const BlogPost = () => {
             <ArrowLeft className="mr-2  text-center " />
             Back to Blog
           </button>
-          
+
           <div className="max-w-4xl mx-auto">
             <div className="mb-6">
               <span className="bg-cure-blue/90 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium">
                 {getCategories(post)[0]}
               </span>
             </div>
-            
+
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-orbitron font-bold text-white mb-6 leading-tight">
               <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
             </h1>
-            
+
             <div className="flex flex-wrap items-center gap-6 text-cure-gray-200 mb-8">
               <div className="flex items-center space-x-2">
                 <User className="h-4 w-4" />
@@ -226,7 +227,7 @@ const BlogPost = () => {
                 <span>{calculateReadingTime(post.content.rendered)}</span>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <Button variant="outline" size="sm" className="border-cure-green/50 text-cure-green hover:bg-cure-green/10 hover:border-cure-green transition-all duration-300 font-medium backdrop-blur-sm text-slate-100 bg-black hover:bg-green-400 hover:text-black">
                 <Share2 className="h-4 w-4 mr-2" />
@@ -246,24 +247,26 @@ const BlogPost = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {getFeaturedImage(post) && (
-              <div className="aspect-video bg-cure-gray-400/30 rounded-xl overflow-hidden mb-12">
-                <img 
-                  src={getFeaturedImage(post)!} 
-                  alt={post.title.rendered} 
-                  className="w-full h-full object-cover"
+              <div className="aspect-video bg-cure-gray-400/30 rounded-xl overflow-hidden mb-12 relative"> {/* ADDED relative if not already */}
+                <Image // CHANGED: from <img> to <Image>
+                  src={getFeaturedImage(post)!}
+                  alt={post.title.rendered}
+                  fill // ADDED: fill prop
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw" // Example sizes, adjust as needed
+                  className="object-cover" // Ensure object-cover still applies
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
+                    target.style.display = 'none'; // Basic fallback for now
                   }}
                 />
               </div>
             )}
-            
-            <article 
+
+            <article
               dangerouslySetInnerHTML={{ __html: post.content.rendered }}
               className="prose prose-lg max-w-none mx-[60px] text-cure-gray-100 prose-headings:text-white prose-headings:font-orbitron prose-a:text-cure-blue prose-strong:text-white prose-p:text-cure-gray-100 prose-li:text-cure-gray-100 prose-ul:text-cure-gray-100 prose-ol:text-cure-gray-100"
             />
-            
+
             {/* CTA Section */}
             <div className="mt-16 p-8 bg-gradient-to-r from-cure-green/10 to-cure-blue/10 rounded-xl border border-cure-green/20">
               <div className="text-center">

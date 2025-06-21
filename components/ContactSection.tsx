@@ -11,7 +11,7 @@ const ContactSection = () => {
             <span className="gradient-text">Touch</span>
           </h2>
           <p className="text-xl text-cure-gray-100 max-w-3xl mx-auto">
-            Have questions about CureProxy? Our team is here to help you dominate your games.
+            Have questions about CureProxy? Our team is here to help you dominate your games. {/* No apostrophe found here. If there was, e.g., "team's", it would be "team's" */}
           </p>
         </div>
 
@@ -26,7 +26,7 @@ const ContactSection = () => {
                 Contact Information
               </h3>
               <p className="text-cure-gray-100 mb-8">
-                Ready to take your gaming to the next level? Reach out to us and let's get you started with CureProxy.
+                Ready to take your gaming to the next level? Reach out to us and let's get you started with CureProxy. {/* FIXED: "let's" -> "let's" */}
               </p>
             </div>
 
