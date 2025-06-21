@@ -1,26 +1,355 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Typography */
+  --font-sans: var(--font-geist-sans), var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-orbitron);
+
+  /* Base Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  /* UI Component Colors */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand Colors */
+  --color-cure-blue: var(--cure-blue);
+  --color-cure-purple: var(--cure-purple);
+  --color-cure-green: var(--cure-green);
+
+  /* Chart Colors */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar Colors */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Border Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Spacing */
+  --spacing-hero: 8rem;
+  --spacing-section: 6rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Base Settings */
+  --radius: 0.5rem;
+  
+  /* Light Theme - Modern Dark UI */
+  --background: oklch(0.07 0.015 240); /* Deep blue-black */
+  --foreground: oklch(0.95 0.005 240); /* Near white with blue tint */
+  
+  /* Cards and Surfaces */
+  --card: oklch(0.12 0.02 240);
+  --card-foreground: oklch(0.95 0.005 240);
+  --popover: oklch(0.12 0.02 240);
+  --popover-foreground: oklch(0.95 0.005 240);
+  
+  /* Primary - Vibrant Orange */
+  --primary: oklch(0.65 0.25 45); /* Bright orange */
+  --primary-foreground: oklch(0.98 0.002 240);
+  
+  /* Secondary - Cool Gray */
+  --secondary: oklch(0.22 0.015 240);
+  --secondary-foreground: oklch(0.95 0.005 240);
+  
+  /* Muted Elements */
+  --muted: oklch(0.18 0.015 240);
+  --muted-foreground: oklch(0.65 0.01 240);
+  
+  /* Accent - Purple */
+  --accent: oklch(0.65 0.25 285); /* Vibrant purple */
+  --accent-foreground: oklch(0.98 0.002 240);
+  
+  /* Destructive */
+  --destructive: oklch(0.65 0.25 25); /* Red-orange */
+  --destructive-foreground: oklch(0.98 0.002 240);
+  
+  /* Borders and Inputs */
+  --border: oklch(0.25 0.015 240);
+  --input: oklch(0.22 0.015 240);
+  --ring: oklch(0.65 0.25 45);
+  
+  /* Brand Colors */
+  --cure-blue: oklch(0.6 0.25 240);
+  --cure-purple: oklch(0.65 0.25 285);
+  --cure-green: oklch(0.7 0.2 150);
+  
+  /* Chart Colors */
+  --chart-1: oklch(0.65 0.25 45);   /* Orange */
+  --chart-2: oklch(0.6 0.25 240);   /* Blue */
+  --chart-3: oklch(0.65 0.25 285);  /* Purple */
+  --chart-4: oklch(0.7 0.2 150);    /* Green */
+  --chart-5: oklch(0.75 0.15 320);  /* Pink */
+  
+  /* Sidebar */
+  --sidebar: oklch(0.08 0.015 240);
+  --sidebar-foreground: oklch(0.9 0.005 240);
+  --sidebar-primary: oklch(0.65 0.25 45);
+  --sidebar-primary-foreground: oklch(0.98 0.002 240);
+  --sidebar-accent: oklch(0.18 0.015 240);
+  --sidebar-accent-foreground: oklch(0.9 0.005 240);
+  --sidebar-border: oklch(0.2 0.015 240);
+  --sidebar-ring: oklch(0.65 0.25 45);
+
+  /* Legacy HSL Values (for compatibility) */
+  --sidebar-background: 10 15 28;
+}
+
+.dark {
+  /* Dark Theme - Ultra Dark Mode */
+  --background: oklch(0.04 0.01 240);
+  --foreground: oklch(0.98 0.002 240);
+  
+  /* Cards and Surfaces */
+  --card: oklch(0.08 0.015 240);
+  --card-foreground: oklch(0.98 0.002 240);
+  --popover: oklch(0.08 0.015 240);
+  --popover-foreground: oklch(0.98 0.002 240);
+  
+  /* Primary - Brighter in dark mode */
+  --primary: oklch(0.75 0.3 45);
+  --primary-foreground: oklch(0.04 0.01 240);
+  
+  /* Secondary */
+  --secondary: oklch(0.15 0.015 240);
+  --secondary-foreground: oklch(0.98 0.002 240);
+  
+  /* Muted Elements */
+  --muted: oklch(0.12 0.015 240);
+  --muted-foreground: oklch(0.7 0.01 240);
+  
+  /* Accent - Enhanced purple */
+  --accent: oklch(0.75 0.3 285);
+  --accent-foreground: oklch(0.04 0.01 240);
+  
+  /* Destructive */
+  --destructive: oklch(0.7 0.3 25);
+  --destructive-foreground: oklch(0.98 0.002 240);
+  
+  /* Borders and Inputs */
+  --border: oklch(0.2 0.015 240);
+  --input: oklch(0.15 0.015 240);
+  --ring: oklch(0.75 0.3 45);
+  
+  /* Enhanced Brand Colors for Dark Mode */
+  --cure-blue: oklch(0.7 0.3 240);
+  --cure-purple: oklch(0.75 0.3 285);
+  --cure-green: oklch(0.8 0.25 150);
+  
+  /* Enhanced Chart Colors */
+  --chart-1: oklch(0.75 0.3 45);    /* Brighter Orange */
+  --chart-2: oklch(0.7 0.3 240);    /* Brighter Blue */
+  --chart-3: oklch(0.75 0.3 285);   /* Brighter Purple */
+  --chart-4: oklch(0.8 0.25 150);   /* Brighter Green */
+  --chart-5: oklch(0.8 0.2 320);    /* Brighter Pink */
+  
+  /* Sidebar Dark */
+  --sidebar: oklch(0.06 0.01 240);
+  --sidebar-foreground: oklch(0.95 0.005 240);
+  --sidebar-primary: oklch(0.75 0.3 45);
+  --sidebar-primary-foreground: oklch(0.04 0.01 240);
+  --sidebar-accent: oklch(0.12 0.015 240);
+  --sidebar-accent-foreground: oklch(0.95 0.005 240);
+  --sidebar-border: oklch(0.15 0.015 240);
+  --sidebar-ring: oklch(0.75 0.3 45);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+  
+  /* Enhanced focus styles */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  /* Legacy styles from app.css */
+  #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Gradient Text Utilities */
+  .gradient-text {
+    @apply bg-gradient-to-r from-cure-blue via-cure-purple to-cure-green bg-clip-text text-transparent;
+  }
+  
+  .gradient-text-primary {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+  
+  /* Glow Effects */
+  .glow-box {
+    @apply relative;
+  }
+  
+  .glow-box::before {
+    @apply absolute inset-0 rounded-lg bg-gradient-to-r from-cure-blue/20 via-cure-purple/20 to-cure-green/20 blur-xl -z-10;
+    content: '';
+  }
+  
+  .glow-primary {
+    @apply relative;
+  }
+  
+  .glow-primary::before {
+    @apply absolute inset-0 rounded-lg bg-primary/30 blur-lg -z-10;
+    content: '';
+  }
+  
+  /* Background Gradients */
+  .hero-gradient {
+    background: radial-gradient(
+      ellipse at center, 
+      oklch(0.6 0.25 240 / 0.1) 0%, 
+      oklch(0.65 0.25 285 / 0.05) 50%, 
+      transparent 100%
+    );
+  }
+  
+  .card-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.12 0.02 240) 0%,
+      oklch(0.1 0.025 250) 100%
+    );
+  }
+  
+  /* Interactive Elements */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 
+           active:bg-primary/80 transition-colors duration-200 
+           focus-visible:outline focus-visible:outline-2 
+           focus-visible:outline-offset-2 focus-visible:outline-primary;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 
+           active:bg-secondary/60 transition-colors duration-200;
+  }
+  
+  .btn-ghost {
+    @apply hover:bg-accent/10 hover:text-accent-foreground 
+           active:bg-accent/20 transition-colors duration-200;
+  }
+  
+  /* Glass Effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-md border border-border/50;
+  }
+  
+  /* Animated Borders */
+  .animated-border {
+    @apply relative overflow-hidden;
+  }
+  
+  .animated-border::before {
+    @apply absolute inset-0 bg-gradient-to-r from-cure-blue via-cure-purple to-cure-green;
+    content: '';
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    padding: 1px;
+  }
+
+  /* Legacy App Components */
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+
+  .card {
+    padding: 2em;
+  }
+
+  .read-the-docs {
+    color: #888;
+  }
+}
+
+@layer utilities {
+  /* Custom keyframes and animations */
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Media queries and animations */
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
